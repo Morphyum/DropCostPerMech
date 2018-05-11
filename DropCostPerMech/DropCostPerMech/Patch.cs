@@ -1,7 +1,11 @@
 ﻿using BattleTech;
+using BattleTech.Framework;
 using BattleTech.UI;
 using Harmony;
 using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 namespace DropCostPerMech {
 
@@ -10,7 +14,9 @@ namespace DropCostPerMech {
 
         static void Postfix(AAR_ContractObjectivesWidget __instance) {
             try {
-               
+                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult("Drop Cost: 100000 C-Bills", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
+
+                ReflectionHelper.InvokePrivateMethode(__instance, "AddObjective", new object[] { missionObjectiveResult });
             }
             catch (Exception e) {
                 Logger.LogError(e);
@@ -23,7 +29,8 @@ namespace DropCostPerMech {
 
         static void Postfix(Contract __instance) {
             try {
-
+                int newMoneyResults = Mathf.FloorToInt(__instance.MoneyResults - 100000f);
+                ReflectionHelper.InvokePrivateMethode(__instance, "set_MoneyResults", new object[] { newMoneyResults });
             }
             catch (Exception e) {
                 Logger.LogError(e);
@@ -34,9 +41,19 @@ namespace DropCostPerMech {
     [HarmonyPatch(typeof(LanceHeaderWidget), "RefreshLanceInfo")]
     public static class LanceHeaderWidget_RefreshLanceInfo {
 
-        static void Postfix(LanceHeaderWidget __instance) {
+        static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
             try {
-
+                LanceConfiguratorPanel LC = (LanceConfiguratorPanel)ReflectionHelper.GetPrivateField(__instance, "LC");
+                if (LC.IsSimGame) {
+                    float num2 = 0f;
+                    int lanceTonnageRating = SimGameBattleSimulator.GetLanceTonnageRating(LC.sim, mechs, out num2);
+                    float cbill = 0f;
+                    foreach (MechDef def in mechs) {
+                        cbill += (float)def.Description.Cost * 0.001f;
+                    }
+                    TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
+                    simLanceTonnageText.text = string.Format("{0} C-Bills, {1} TONS", (int)cbill, (int)num2);
+                }
             }
             catch (Exception e) {
                 Logger.LogError(e);

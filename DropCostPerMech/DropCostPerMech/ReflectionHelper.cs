@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using BattleTech;
 
 namespace DropCostPerMech {
     public static class ReflectionHelper {
@@ -19,7 +20,7 @@ namespace DropCostPerMech {
         public static void SetPrivateProperty(object instance, string propertyname, object value) {
             Type type = instance.GetType();
             PropertyInfo property = type.GetProperty(propertyname, BindingFlags.NonPublic | BindingFlags.Instance);
-            property.SetValue(instance, value);
+            property.SetValue(instance, value, null);
         }
 
         public static void SetPrivateField(object instance, string fieldname, object value) {
