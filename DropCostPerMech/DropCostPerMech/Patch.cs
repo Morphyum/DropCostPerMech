@@ -48,9 +48,16 @@ namespace DropCostPerMech {
                     float num2 = 0f;
                     int lanceTonnageRating = SimGameBattleSimulator.GetLanceTonnageRating(LC.sim, mechs, out num2);
                     Fields.cbill = 0f;
-                    foreach (MechDef def in mechs) {
-                        Fields.cbill += (float)def.Description.Cost * settings.percentageOfMechCost;
+                    if (settings.CostByTons) {
+                        foreach (MechDef def in mechs) {
+                            Fields.cbill += (float)def.Chassis.Tonnage * settings.cbillsPerTon;
+                        }
+                    } else {
+                        foreach (MechDef def in mechs) {
+                            Fields.cbill += (float)def.Description.Cost * settings.percentageOfMechCost;
+                        }
                     }
+                    
                     TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
                     simLanceTonnageText.text = string.Format("Operation Costs: {0} ¢ / Lance Weight: {1} TONS", (int)Fields.cbill, (int)num2);
                 }
