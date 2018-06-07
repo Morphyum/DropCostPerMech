@@ -46,19 +46,22 @@ namespace DropCostPerMech {
                 LanceConfiguratorPanel LC = (LanceConfiguratorPanel)ReflectionHelper.GetPrivateField(__instance, "LC");
                 if (LC.IsSimGame) {
                     int lanceTonnageRating = SimGameBattleSimulator.GetLanceTonnageRating(LC.sim, mechs, out float num2);
-                    Fields.cbill = 0f;
+                    int lanceTonnage = 0;
+                    float dropCost = 0f;
                     if (settings.CostByTons) {
                         foreach (MechDef def in mechs) {
-                            Fields.cbill += (float)def.Chassis.Tonnage * settings.cbillsPerTon;
+                            dropCost += def.Chassis.Tonnage * settings.cbillsPerTon;
+                            lanceTonnage += (int)def.Chassis.Tonnage;
                         }
                     } else {
                         foreach (MechDef def in mechs) {
-                            Fields.cbill += (float)def.Description.Cost * settings.percentageOfMechCost;
+                            dropCost += def.Description.Cost * settings.percentageOfMechCost;
+                            lanceTonnage += (int)def.Chassis.Tonnage;
                         }
                     }
                     
                     TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
-                    simLanceTonnageText.text = string.Format("Operation Costs: {0} ¢ / Lance Weight: {1} TONS", (int)Fields.cbill, (int)num2);
+                    simLanceTonnageText.text = string.Format($"OPERATION COSTS: {(int)dropCost} ¢ / LANCE WEIGHT: {lanceTonnage} TONS");
                 }
             }
             catch (Exception e) {
