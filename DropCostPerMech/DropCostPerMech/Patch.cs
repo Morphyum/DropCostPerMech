@@ -51,13 +51,13 @@ namespace DropCostPerMech {
                         foreach (MechDef def in mechs) {
                             dropCost += (def.Chassis.Tonnage * settings.cbillsPerTon);
                             lanceTonnage += (int)def.Chassis.Tonnage;
-                            Logger.LogLine($"CostByTons - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
+                            Logger.LogCompactLine($"CostByTons - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
                         }
                     } else {
                         foreach (MechDef def in mechs) {
                             dropCost += (def.Description.Cost * settings.percentageOfMechCost);
                             lanceTonnage += (int)def.Chassis.Tonnage;
-                            Logger.LogLine($"CostByPrice - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
+                            Logger.LogCompactLine($"CostByPrice - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
                         }
                     }
                     
