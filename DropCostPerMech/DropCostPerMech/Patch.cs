@@ -45,8 +45,7 @@ namespace DropCostPerMech {
 
                 LanceConfiguratorPanel LC = (LanceConfiguratorPanel)ReflectionHelper.GetPrivateField(__instance, "LC");
                 if (LC.IsSimGame) {
-                    float num2 = 0f;
-                    int lanceTonnageRating = SimGameBattleSimulator.GetLanceTonnageRating(LC.sim, mechs, out num2);
+                    int lanceTonnageRating = SimGameBattleSimulator.GetLanceTonnageRating(LC.sim, mechs, out float num2);
                     Fields.cbill = 0f;
                     if (settings.CostByTons) {
                         foreach (MechDef def in mechs) {
