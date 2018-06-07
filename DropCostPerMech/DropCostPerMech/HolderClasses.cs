@@ -4,6 +4,9 @@
 
         public bool CostByTons = false;
         public int cbillsPerTon = 500;
+
+        public bool someFreeTonnage = false;
+        int freeTonnageAmount = 0;
     }
 
     public class Fields {
