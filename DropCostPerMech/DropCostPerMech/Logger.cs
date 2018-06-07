@@ -19,5 +19,14 @@ namespace DropCostPerMech {
                 writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
             }
         }
+
+        public static void LogCompactLine(String line)
+        {
+            string filePath = "mods/DropCostPerMech/Log.txt";
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine($"{DateTime.Now.ToString()} line");
+            }
+        }
     }
 }
