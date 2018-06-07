@@ -6,7 +6,7 @@
         public int cbillsPerTon = 500;
 
         public bool someFreeTonnage = false;
-        int freeTonnageAmount = 0;
+        public int freeTonnageAmount = 0;
     }
 
     public class Fields {

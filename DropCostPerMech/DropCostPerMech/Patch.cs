@@ -42,26 +42,33 @@ namespace DropCostPerMech {
         static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
             try {
                 Settings settings = Helper.LoadSettings();
-
+                string freeTonnage = "";
                 LanceConfiguratorPanel LC = (LanceConfiguratorPanel)ReflectionHelper.GetPrivateField(__instance, "LC");
                 if (LC.IsSimGame) {
-                    int lanceTonnageRating = SimGameBattleSimulator.GetLanceTonnageRating(LC.sim, mechs, out float num2);
                     int lanceTonnage = 0;
                     float dropCost = 0f;
                     if (settings.CostByTons) {
                         foreach (MechDef def in mechs) {
-                            dropCost += def.Chassis.Tonnage * settings.cbillsPerTon;
+                            dropCost += (def.Chassis.Tonnage * settings.cbillsPerTon);
                             lanceTonnage += (int)def.Chassis.Tonnage;
+                            Logger.LogLine($"CostByTons - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
                         }
                     } else {
                         foreach (MechDef def in mechs) {
-                            dropCost += def.Description.Cost * settings.percentageOfMechCost;
+                            dropCost += (def.Description.Cost * settings.percentageOfMechCost);
                             lanceTonnage += (int)def.Chassis.Tonnage;
+                            Logger.LogLine($"CostByPrice - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
                         }
                     }
                     
                     TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
-                    simLanceTonnageText.text = string.Format($"OPERATION COSTS: {(int)dropCost} ¢ / LANCE WEIGHT: {lanceTonnage} TONS");
+
+                    if (settings.CostByTons && settings.someFreeTonnage)
+                    {
+                        freeTonnage = $" {freeTonnage} FREE TONS";
+                        dropCost = Math.Max(0f, (lanceTonnage - (settings.freeTonnageAmount * settings.cbillsPerTon)));
+                    }
+                    simLanceTonnageText.text = string.Format($"OPERATION COSTS: {(int)dropCost} ¢ / LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}");
                 }
             }
             catch (Exception e) {
