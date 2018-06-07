@@ -51,13 +51,11 @@ namespace DropCostPerMech {
                         foreach (MechDef def in mechs) {
                             dropCost += (def.Chassis.Tonnage * settings.cbillsPerTon);
                             lanceTonnage += (int)def.Chassis.Tonnage;
-                            //Logger.LogCompactLine($"CostByTons - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
                         }
                     } else {
                         foreach (MechDef def in mechs) {
                             dropCost += (def.Description.Cost * settings.percentageOfMechCost);
                             lanceTonnage += (int)def.Chassis.Tonnage;
-                            //Logger.LogCompactLine($"CostByPrice - dropCost: {dropCost} lanceTonnage:{lanceTonnage}");
                         }
                     }
                     
@@ -66,8 +64,6 @@ namespace DropCostPerMech {
                     {
                         freeTonnage = $", WITH {settings.freeTonnageAmount} FREE TONS (SAVING ¢{Math.Abs(lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon})";
                         dropCost = Math.Max(0f,(lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon);
-                        //Logger.LogCompactLine($"freeTonnage: {settings.freeTonnageAmount}");
-                        //Logger.LogCompactLine($"cost formula {dropCost} = Math.Max({0f}, ({lanceTonnage} - {settings.freeTonnageAmount}) * {settings.cbillsPerTon}");
                     }
                     simLanceTonnageText.text = $"DROP OPERATION COSTS: ¢{(int)dropCost}   LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
                 }
