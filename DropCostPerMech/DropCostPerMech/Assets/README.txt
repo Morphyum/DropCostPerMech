@@ -5,7 +5,7 @@ The settings.json file has 4 options.
     "percentageOfMechCost" : 0.0025,
     "CostByTons" : false,
     "cbillsPerTon" : 500,
-    "someFreeDropTonnage" : false,
+    "someFreeTonnage" : false,
     "freeTonnageAmount" :0   
 
 	CostByTons controls wether you are billed based on the weight, or on the cost of the mech itself.
