@@ -6,7 +6,7 @@ The settings.json file has 4 options.
     "CostByTons" : false,
     "cbillsPerTon" : 500,
     "someFreeTonnage" : false,
-    "freeTonnageAmount" :0   
+    "freeTonnageAmount" : 0   
 
 	CostByTons controls wether you are billed based on the weight, or on the cost of the mech itself.
 	someFreeDropTonnage will reduce the cost of any drop based on an 'allowance' of free tonnage.
