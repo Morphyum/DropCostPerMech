@@ -38,7 +38,7 @@ namespace DropCostPerMech {
     }
 
     [HarmonyPatch(typeof(LanceHeaderWidget), "RefreshLanceInfo")]
-    public static class LanceHeaderWidget_RefreshLanceInfo {    
+    public static class LanceHeaderWidget_RefreshLanceInfo {
         static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
             try {
                 Settings settings = Helper.LoadSettings();
@@ -58,12 +58,11 @@ namespace DropCostPerMech {
                             lanceTonnage += (int)def.Chassis.Tonnage;
                         }
                     }
-                    
+
                     TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
-                    if (settings.CostByTons && settings.someFreeTonnage)
-                    {
+                    if (settings.CostByTons && settings.someFreeTonnage) {
                         freeTonnage = $", WITH {settings.freeTonnageAmount} FREE TONS (SAVING ¢{Math.Abs(lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon})";
-                        dropCost = Math.Max(0f,(lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon);
+                        dropCost = Math.Max(0f, (lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon);
                     }
                     simLanceTonnageText.text = $"DROP OPERATION COSTS: ¢{(int)dropCost}   LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
                 }

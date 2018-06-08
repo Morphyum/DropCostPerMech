@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using BattleTech;
 
 namespace DropCostPerMech {
     public static class ReflectionHelper {
-        
+
         public static object InvokePrivateMethode(object instance, string methodname, object[] parameters) {
             Type type = instance.GetType();
             MethodInfo methodInfo = type.GetMethod(methodname, BindingFlags.NonPublic | BindingFlags.Instance);
