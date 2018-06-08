@@ -14,7 +14,7 @@ namespace DropCostPerMech {
 
         static void Postfix(AAR_ContractObjectivesWidget __instance) {
             try {
-                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult("Operation Costs: " + Mathf.FloorToInt(Fields.cbill) + " ¢", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
+                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP OPERATION COSTS: ¢{Mathf.FloorToInt(Fields.cbill)}", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
                 ReflectionHelper.InvokePrivateMethode(__instance, "AddObjective", new object[] { missionObjectiveResult });
             }
             catch (Exception e) {
