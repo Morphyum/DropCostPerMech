@@ -3,5 +3,5 @@
     "CostByTons" : false,
     "cbillsPerTon" : 500,
     "someFreeTonnage" : false,
-    "freeTonnageAmount" : 0    
+    "freeTonnageAmount" : 0
 }
