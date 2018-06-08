@@ -1,6 +1,6 @@
 root = true
 
-[*]
+[*.cs]
 end_of_line = crlf
 indent_size = 4
 indent_style = space
@@ -8,3 +8,7 @@ insert_final_newline = true
 csharp_new_line_before_open_brace = none
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_else = false
+csharp_new_line_before_finally = false
+trim_trailing_whitespace = true
