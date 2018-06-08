@@ -9,12 +9,18 @@ using UnityEngine;
 
 namespace DropCostPerMech {
 
+    public class LanceInfo
+    {
+        public int Tonnage { get; set; }
+    }
+
     [HarmonyPatch(typeof(AAR_ContractObjectivesWidget), "FillInObjectives")]
     public static class AAR_ContractObjectivesWidget_FillInObjectives {
 
         static void Postfix(AAR_ContractObjectivesWidget __instance) {
             try {
-                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP OPERATION COSTS: ¢{Mathf.FloorToInt(Fields.cbill)}", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
+                string formattedDropCost = string.Format("0:n0", Mathf.FloorToInt(Fields.cbill));
+                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP OPERATION COSTS: ¢{formattedDropCost}", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
                 ReflectionHelper.InvokePrivateMethode(__instance, "AddObjective", new object[] { missionObjectiveResult });
             }
             catch (Exception e) {
@@ -65,7 +71,8 @@ namespace DropCostPerMech {
                         dropCost = Math.Max(0f, (lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon);
                     }
                     // longer strings interfere with messages about incorrect lance configurations
-                    simLanceTonnageText.text = $"DROP COST: ¢{(int)dropCost} - LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
+                    string formattedDropCost = string.Format("{0:n0}", dropCost);
+                    simLanceTonnageText.text = $"DROP COST: ¢{formattedDropCost}   LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
                 }
             }
             catch (Exception e) {
