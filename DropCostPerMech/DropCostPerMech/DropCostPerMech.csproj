@@ -72,9 +72,7 @@
     <Content Include="Assets\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /y $(TargetPath) N:\SteamLibrary\steamapps\common\BATTLETECH\Mods\DropCostPerMech
-</PostBuildEvent>
+  <PropertyGroup>   
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
