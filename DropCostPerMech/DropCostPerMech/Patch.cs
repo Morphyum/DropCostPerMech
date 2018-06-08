@@ -61,10 +61,11 @@ namespace DropCostPerMech {
 
                     TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
                     if (settings.CostByTons && settings.someFreeTonnage) {
-                        freeTonnage = $", WITH {settings.freeTonnageAmount} FREE TONS (SAVING ¢{Math.Abs(lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon})";
+                        freeTonnage = $" ({settings.freeTonnageAmount} FREE)";  
                         dropCost = Math.Max(0f, (lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon);
                     }
-                    simLanceTonnageText.text = $"DROP OPERATION COSTS: ¢{(int)dropCost}   LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
+                    // longer strings interfere with messages about incorrect lance configurations
+                    simLanceTonnageText.text = $"DROP COST: ¢{(int)dropCost} - LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
                 }
             }
             catch (Exception e) {
