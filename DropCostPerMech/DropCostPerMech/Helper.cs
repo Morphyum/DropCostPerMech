@@ -5,9 +5,17 @@ using System.IO;
 namespace DropCostPerMech {
     public class SaveFields {
         public float cbill = 0;
+        public static float DropCost = 0;
+        public static int LanceTonnage = 0;
+        public static string FormattedDropCost;
+        public static string FreeTonnageText;
 
         public SaveFields(float cbill) {
             this.cbill = cbill;
+            DropCost = 0;
+            LanceTonnage = 0;
+            FormattedDropCost = string.Empty;
+            FreeTonnageText = string.Empty;
         }
     }
 
