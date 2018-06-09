@@ -5,17 +5,17 @@ using System.IO;
 namespace DropCostPerMech {
     public class SaveFields {
         public float cbill = 0;
-        public static float DropCost = 0;
-        public static int LanceTonnage = 0;
-        public static string FormattedDropCost;
-        public static string FreeTonnageText;
+        public float DropCost = 0;
+        public int LanceTonnage = 0;
+        public string FormattedDropCost;
+        public string FreeTonnageText;
 
-        public SaveFields(float cbill) {
+        public SaveFields(float cbill, float dropCost, int lanceTonnage, string formattedDropCost, string freeTonnageText) {
             this.cbill = cbill;
-            DropCost = 0;
-            LanceTonnage = 0;
-            FormattedDropCost = string.Empty;
-            FreeTonnageText = string.Empty;
+            DropCost = dropCost;
+            LanceTonnage = lanceTonnage;
+            FormattedDropCost = formattedDropCost;
+            FreeTonnageText = freeTonnageText;
         }
     }
 
@@ -40,7 +40,7 @@ namespace DropCostPerMech {
                 string filePath = $"{DropCostPerMech.ModDirectory}/saves/" + instanceGUID + "-" + unixTimestamp + ".json";
                 (new FileInfo(filePath)).Directory.Create();
                 using (StreamWriter writer = new StreamWriter(filePath, true)) {
-                    SaveFields fields = new SaveFields(Fields.cbill);
+                    SaveFields fields = new SaveFields(Fields.DropCost, Fields.DropCost, Fields.LanceTonnage, Fields.FormattedDropCost, Fields.FreeTonnageText);
                     string json = JsonConvert.SerializeObject(fields);
                     writer.Write(json);
                 }
@@ -58,7 +58,7 @@ namespace DropCostPerMech {
                     using (StreamReader r = new StreamReader(filePath)) {
                         string json = r.ReadToEnd();
                         SaveFields save = JsonConvert.DeserializeObject<SaveFields>(json);
-                        Fields.cbill = save.cbill;
+                        Fields.DropCost = save.cbill;
                     }
                 }
             }

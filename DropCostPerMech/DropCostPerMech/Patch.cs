@@ -50,7 +50,7 @@ namespace DropCostPerMech {
 
         static void Postfix(Contract __instance) {
             try {
-                int newMoneyResults = Mathf.FloorToInt(__instance.MoneyResults - Fields.cbill);
+                int newMoneyResults = Mathf.FloorToInt(__instance.MoneyResults - Fields.DropCost);
                 ReflectionHelper.InvokePrivateMethode(__instance, "set_MoneyResults", new object[] { newMoneyResults });
             }
             catch (Exception e) {
