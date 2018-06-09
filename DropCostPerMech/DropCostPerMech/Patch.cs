@@ -19,13 +19,13 @@ namespace DropCostPerMech {
 
         static void Postfix(AAR_ContractObjectivesWidget __instance) {
             try {
-                string formattedDropCost = string.Format("{0:n0}", Mathf.FloorToInt(Fields.cbill));
-                Logger.LogLine($"formattedDropCost: {formattedDropCost}");
-                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP COSTS DEDUCTED: ¢{formattedDropCost} ({Mathf.FloorToInt(Fields.cbill)})", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
-                formattedDropCost = string.Format("{0:n0}", Mathf.FloorToInt(Fields.cbill));
-                Logger.LogLine($"Mathf.FloorToInt(Fields.cbill): {Mathf.FloorToInt(Fields.cbill)} " +
-                    $"formattedDropCost: {formattedDropCost} Fields.cbill: {Fields.cbill}");
-                   
+                Settings settings = Helper.LoadSettings();
+
+                string missionObjectiveResultString = $"DROP COSTS DEDUCTED: ¢{Fields.FormattedDropCost}";
+                if (settings.CostByTons) {
+                    missionObjectiveResultString += $"{Environment.NewLine}AFTER {settings.freeTonnageAmount} TON CREDIT WORTH ¢{string.Format("{0:n0}", settings.freeTonnageAmount * settings.cbillsPerTon)}";
+                }
+                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult(missionObjectiveResultString, "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);               
                 ReflectionHelper.InvokePrivateMethode(__instance, "AddObjective", new object[] { missionObjectiveResult });
             }
             catch (Exception e) {
@@ -39,7 +39,7 @@ namespace DropCostPerMech {
 
         static void Postfix(Contract __instance) {
             try {
-                int newMoneyResults = Mathf.FloorToInt(__instance.MoneyResults - Fields.cbill);
+                int newMoneyResults = Mathf.FloorToInt(__instance.MoneyResults - Fields.DropCost);
                 ReflectionHelper.InvokePrivateMethode(__instance, "set_MoneyResults", new object[] { newMoneyResults });
             }
             catch (Exception e) {
@@ -50,10 +50,10 @@ namespace DropCostPerMech {
 
     [HarmonyPatch(typeof(LanceHeaderWidget), "RefreshLanceInfo")]
     public static class LanceHeaderWidget_RefreshLanceInfo {
-        static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
+        public static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
             try {
                 Settings settings = Helper.LoadSettings();
-                string freeTonnage = "";
+                string freeTonnageText = "";
                 LanceConfiguratorPanel LC = (LanceConfiguratorPanel)ReflectionHelper.GetPrivateField(__instance, "LC");
                 if (LC.IsSimGame) {
                     int lanceTonnage = 0;
@@ -69,16 +69,20 @@ namespace DropCostPerMech {
                             lanceTonnage += (int)def.Chassis.Tonnage;
                         }
                     }
-
-                    Fields.cbill = dropCost;
-                    TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
                     if (settings.CostByTons && settings.someFreeTonnage) {
-                        freeTonnage = $" ({settings.freeTonnageAmount} FREE)";  
+                        freeTonnageText = $"({settings.freeTonnageAmount} TONS FREE)";
                         dropCost = Math.Max(0f, (lanceTonnage - settings.freeTonnageAmount) * settings.cbillsPerTon);
                     }
-                    // longer strings interfere with messages about incorrect lance configurations
+
                     string formattedDropCost = string.Format("{0:n0}", dropCost);
-                    simLanceTonnageText.text = $"DROP COST: ¢{formattedDropCost}   LANCE WEIGHT: {lanceTonnage} TONS{freeTonnage}";
+                    Fields.DropCost = dropCost;
+                    Fields.LanceTonnage = lanceTonnage;
+                    Fields.FormattedDropCost = formattedDropCost;
+                    Fields.FreeTonnageText = freeTonnageText;
+
+                    TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
+                    // longer strings interfere with messages about incorrect lance configurations
+                    simLanceTonnageText.text = $"DROP COST: ¢{Fields.FormattedDropCost}   LANCE WEIGHT: {Fields.LanceTonnage} TONS {Fields.FreeTonnageText}";
                 }
             }
             catch (Exception e) {
