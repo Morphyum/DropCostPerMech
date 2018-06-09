@@ -29,7 +29,7 @@ namespace DropCostPerMech {
         public static void SaveState(string instanceGUID, DateTime saveTime) {
             try {
                 int unixTimestamp = (int)(saveTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                string filePath = "mods/DropCostPerMech/saves/" + instanceGUID + "-" + unixTimestamp + ".json";
+                string filePath = $"{DropCostPerMech.ModDirectory}/saves/" + instanceGUID + "-" + unixTimestamp + ".json";
                 (new FileInfo(filePath)).Directory.Create();
                 using (StreamWriter writer = new StreamWriter(filePath, true)) {
                     SaveFields fields = new SaveFields(Fields.cbill);
@@ -45,7 +45,7 @@ namespace DropCostPerMech {
         public static void LoadState(string instanceGUID, DateTime saveTime) {
             try {
                 int unixTimestamp = (int)(saveTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                string filePath = "mods/DropCostPerMech/saves/" + instanceGUID + "-" + unixTimestamp + ".json";
+                string filePath = $"{DropCostPerMech.ModDirectory}/saves/" + instanceGUID + "-" + unixTimestamp + ".json";
                 if (File.Exists(filePath)) {
                     using (StreamReader r = new StreamReader(filePath)) {
                         string json = r.ReadToEnd();
