@@ -1,0 +1,12 @@
+{
+    "Name": "DropCostPerMech",
+    "Enabled": true,
+
+    "Version": "0.1",
+    "Description": "Makes you pay an operational cost for each mech you want to use in a mission, based on its chassis price.",
+    "Author": "Morphyum",
+    "Website": "https://github.com/Morphyum/DropCostPerMech",
+    "Contact": "",
+	
+	"DLL": "DropCostPerMech.dll",
+}
