@@ -15,7 +15,7 @@ namespace DropCostPerMech {
 
         public static Settings LoadSettings() {
             try {
-                using (StreamReader r = new StreamReader("mods/DropCostPerMech/settings.json")) {
+                using (StreamReader r = new StreamReader($"{DropCostPerMech.ModDirectory}/settings.json")) {
                     string json = r.ReadToEnd();
                     return JsonConvert.DeserializeObject<Settings>(json);
                 }
