@@ -62,6 +62,7 @@
     <Compile Include="ReflectionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
