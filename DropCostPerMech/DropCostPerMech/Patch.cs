@@ -20,7 +20,12 @@ namespace DropCostPerMech {
         static void Postfix(AAR_ContractObjectivesWidget __instance) {
             try {
                 string formattedDropCost = string.Format("{0:n0}", Mathf.FloorToInt(Fields.cbill));
-                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP COSTS DEDUCTED: ¢{formattedDropCost}", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
+                Logger.LogLine($"formattedDropCost: {formattedDropCost}");
+                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP COSTS DEDUCTED: ¢{formattedDropCost} ({Mathf.FloorToInt(Fields.cbill)})", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
+                formattedDropCost = string.Format("{0:n0}", Mathf.FloorToInt(Fields.cbill));
+                Logger.LogLine($"Mathf.FloorToInt(Fields.cbill): {Mathf.FloorToInt(Fields.cbill)} " +
+                    $"formattedDropCost: {formattedDropCost} Fields.cbill: {Fields.cbill}");
+                   
                 ReflectionHelper.InvokePrivateMethode(__instance, "AddObjective", new object[] { missionObjectiveResult });
             }
             catch (Exception e) {
@@ -65,6 +70,7 @@ namespace DropCostPerMech {
                         }
                     }
 
+                    Fields.cbill = dropCost;
                     TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
                     if (settings.CostByTons && settings.someFreeTonnage) {
                         freeTonnage = $" ({settings.freeTonnageAmount} FREE)";  
