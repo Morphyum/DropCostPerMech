@@ -9,7 +9,6 @@
     }
 
     public class Fields {
-        public static float cbill = 0;
         public static float DropCost = 0;
         public static int LanceTonnage = 0;
         public static string FormattedDropCost = string.Empty;
