@@ -19,8 +19,8 @@ namespace DropCostPerMech {
 
         static void Postfix(AAR_ContractObjectivesWidget __instance) {
             try {
-                string formattedDropCost = string.Format("{0:n0}", Fields.cbill);
-                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP OPERATION COSTS: ¢{formattedDropCost}", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
+                string formattedDropCost = string.Format("{0:n0}", Mathf.FloorToInt(Fields.cbill));
+                MissionObjectiveResult missionObjectiveResult = new MissionObjectiveResult($"DROP COSTS DEDUCTED: ¢{formattedDropCost}", "7facf07a-626d-4a3b-a1ec-b29a35ff1ac0", false, true, ObjectiveStatus.Succeeded, false);
                 ReflectionHelper.InvokePrivateMethode(__instance, "AddObjective", new object[] { missionObjectiveResult });
             }
             catch (Exception e) {
