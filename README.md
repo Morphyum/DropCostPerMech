@@ -16,6 +16,8 @@ Setting | Type | Default | Description
 percentageOfMechCost | float | default 0.0025 | set this to anything between 0 and 1 to set the percentage of the chassis cost you have to pay for the mission. 0 = 0%, 1 = 100%
 CostByTons | bool | default false | set this to true if you want tonnage to be the factor to determine the drop costs.
 cbillsPerTon | int | default 500 | if CostByTons is true, this sets the cost per ton.
+someFreeTonnage | bool| default false| Activates free tonnage mode.
+freeTonnageAmount| int | default 0| Sets the ammount of tons that are free from costs.
 
 ## Download
 Downloads can be found on [github](https://github.com/Morphyum/DropCostPerMech/releases).
