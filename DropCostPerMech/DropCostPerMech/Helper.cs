@@ -4,10 +4,16 @@ using System.IO;
 
 namespace DropCostPerMech {
     public class SaveFields {
-        public float cbill = 0;
+        public float DropCost = 0;
+        public int LanceTonnage = 0;
+        public string FormattedDropCost;
+        public string FreeTonnageText;
 
-        public SaveFields(float cbill) {
-            this.cbill = cbill;
+        public SaveFields(float dropCost, int lanceTonnage, string formattedDropCost, string freeTonnageText) {
+            DropCost = dropCost;
+            LanceTonnage = lanceTonnage;
+            FormattedDropCost = formattedDropCost;
+            FreeTonnageText = freeTonnageText;
         }
     }
 
@@ -32,7 +38,7 @@ namespace DropCostPerMech {
                 string filePath = $"{DropCostPerMech.ModDirectory}/saves/" + instanceGUID + "-" + unixTimestamp + ".json";
                 (new FileInfo(filePath)).Directory.Create();
                 using (StreamWriter writer = new StreamWriter(filePath, true)) {
-                    SaveFields fields = new SaveFields(Fields.cbill);
+                    SaveFields fields = new SaveFields(Fields.DropCost, Fields.LanceTonnage, Fields.FormattedDropCost, Fields.FreeTonnageText);
                     string json = JsonConvert.SerializeObject(fields);
                     writer.Write(json);
                 }
@@ -50,7 +56,11 @@ namespace DropCostPerMech {
                     using (StreamReader r = new StreamReader(filePath)) {
                         string json = r.ReadToEnd();
                         SaveFields save = JsonConvert.DeserializeObject<SaveFields>(json);
-                        Fields.cbill = save.cbill;
+                        Fields.DropCost = save.DropCost;
+                        Fields.LanceTonnage = save.LanceTonnage;
+                        Fields.FormattedDropCost = save.FormattedDropCost;
+                        Fields.FreeTonnageText = save.FreeTonnageText;
+
                     }
                 }
             }
