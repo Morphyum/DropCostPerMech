@@ -77,7 +77,7 @@ namespace DropCostPerMech {
                         }
                     } else {
                         foreach (MechDef def in mechs) {
-                            dropCost += (def.Description.Cost * settings.percentageOfMechCost);
+                            dropCost += (Helper.CalculateCBillValue(def) * settings.percentageOfMechCost);
                             lanceTonnage += (int)def.Chassis.Tonnage;
                         }
                     }
