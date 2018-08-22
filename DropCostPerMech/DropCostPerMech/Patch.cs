@@ -10,7 +10,7 @@ using TMPro;
 using UnityEngine;
 
 namespace DropCostPerMech {
-    [HarmonyPatch(typeof(GameInstanceSave))]
+    [HarmonyPatch(typeof(GameInstanceSave), MethodType.Constructor)]
     [HarmonyPatch(new Type[] { typeof(GameInstance), typeof(SaveReason) })]
     public static class GameInstanceSave_Constructor_Patch {
         static void Postfix(GameInstanceSave __instance) {
