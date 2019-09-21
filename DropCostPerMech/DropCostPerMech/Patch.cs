@@ -60,7 +60,7 @@ namespace DropCostPerMech {
     }
 
     [HarmonyPatch(typeof(LanceHeaderWidget), "RefreshLanceInfo")]
-    public static class LanceHeaderWidget_RefreshLanceInfo {    
+    public static class LanceHeaderWidget_RefreshLanceInfo {
         static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
             try {
                 Settings settings = Helper.LoadSettings();
@@ -75,7 +75,8 @@ namespace DropCostPerMech {
                             dropCost += (def.Chassis.Tonnage * settings.cbillsPerTon);
                             lanceTonnage += (int)def.Chassis.Tonnage;
                         }
-                    } else {
+                    }
+                    else {
                         foreach (MechDef def in mechs) {
                             dropCost += (Helper.CalculateCBillValue(def) * settings.percentageOfMechCost);
                             lanceTonnage += (int)def.Chassis.Tonnage;
@@ -96,7 +97,20 @@ namespace DropCostPerMech {
                     // longer strings interfere with messages about incorrect lance configurations
                     simLanceTonnageText.text = $"DROP COST: ¢{Fields.FormattedDropCost}   LANCE WEIGHT: {Fields.LanceTonnage} TONS {Fields.FreeTonnageText}";
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
+                Logger.LogError(e);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(SGCmdCenterLanceConfigBG), "OnAddedToHierarchy")]
+    public static class SGCmdCenterLanceConfigBG_OnAddedToHierarchy {
+        static void Postfix(SGCmdCenterLanceConfigBG __instance) {
+            try {
+                __instance.LC.transform.FindRecursive("lanceSlot1").gameObject.active = false;
+            }
+            catch (Exception e) {
                 Logger.LogError(e);
             }
         }
