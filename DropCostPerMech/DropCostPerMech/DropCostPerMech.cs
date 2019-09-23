@@ -7,9 +7,10 @@ namespace DropCostPerMech
     {
         internal static string ModDirectory;
         public static void Init(string directory, string settingsJSON) {
+            ModDirectory = directory;
             var harmony = HarmonyInstance.Create("de.morphyum.DropCostPerMech");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-            ModDirectory = directory;
+           
         }
     }
 }

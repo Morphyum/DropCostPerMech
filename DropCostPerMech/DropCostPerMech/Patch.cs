@@ -3,6 +3,7 @@ using BattleTech.Framework;
 using BattleTech.Save;
 using BattleTech.Save.SaveGameStructure;
 using BattleTech.UI;
+using BattleTech.UI.TMProWrapper;
 using Harmony;
 using System;
 using System.Collections.Generic;
@@ -61,13 +62,13 @@ namespace DropCostPerMech {
 
     [HarmonyPatch(typeof(LanceHeaderWidget), "RefreshLanceInfo")]
     public static class LanceHeaderWidget_RefreshLanceInfo {
-        static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs) {
+        static void Postfix(LanceHeaderWidget __instance, List<MechDef> mechs, LocalizableText ___simLanceTonnageText, LanceConfiguratorPanel ___LC) {
             try {
                 Settings settings = Helper.LoadSettings();
                 string freeTonnageText = "";
 
-                LanceConfiguratorPanel LC = (LanceConfiguratorPanel)ReflectionHelper.GetPrivateField(__instance, "LC");
-                if (LC.IsSimGame) {
+               
+                if (___LC.IsSimGame) {
                     int lanceTonnage = 0;
                     float dropCost = 0f;
                     if (settings.CostByTons) {
@@ -92,23 +93,10 @@ namespace DropCostPerMech {
                     Fields.LanceTonnage = lanceTonnage;
                     Fields.FormattedDropCost = formattedDropCost;
                     Fields.FreeTonnageText = freeTonnageText;
-
-                    TextMeshProUGUI simLanceTonnageText = (TextMeshProUGUI)ReflectionHelper.GetPrivateField(__instance, "simLanceTonnageText");
+                    
                     // longer strings interfere with messages about incorrect lance configurations
-                    simLanceTonnageText.text = $"DROP COST: ¢{Fields.FormattedDropCost}   LANCE WEIGHT: {Fields.LanceTonnage} TONS {Fields.FreeTonnageText}";
+                    ___simLanceTonnageText.SetText($"DROP COST: ¢{Fields.FormattedDropCost}   LANCE WEIGHT: {Fields.LanceTonnage} TONS {Fields.FreeTonnageText}");
                 }
-            }
-            catch (Exception e) {
-                Logger.LogError(e);
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(SGCmdCenterLanceConfigBG), "OnAddedToHierarchy")]
-    public static class SGCmdCenterLanceConfigBG_OnAddedToHierarchy {
-        static void Postfix(SGCmdCenterLanceConfigBG __instance) {
-            try {
-                __instance.LC.transform.FindRecursive("lanceSlot1").gameObject.active = false;
             }
             catch (Exception e) {
                 Logger.LogError(e);
